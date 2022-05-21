@@ -20,4 +20,10 @@ const nextYearDate = `${currentYear + 1}-${currentMonth}-${currentDay}`;
 
 const popularGames = `games?key=${process.env.REACT_APP_API}&dates=${lastYearDate},${currentDate}&ordering=-rating&page_size=10`;
 
+const upcomingGames = `games?key=${process.env.REACT_APP_API}&dates=${currentDate},${nextYearDate}&ordering=-added&page_size=10`;
+
+const newGames = `games?key=${process.env.REACT_APP_API}&dates=${lastYearDate},${currentDate}&ordering=-released&page_size=10`;
+
 export const popularGamesURL = () => `${base_URL}${popularGames}`;
+export const upComingGamesURL = () => `${base_URL}${upcomingGames}`;
+export const newGamesURL = () => `${base_URL}${newGames}`;
