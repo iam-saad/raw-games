@@ -28,8 +28,8 @@ body{
 }
 h2{
   font-size: 7rem;
-  font-family: 'Abril Fatface', cursive;
-  font-weight: lighter;
+  font-family: 'Inter', sans-serif;
+  font-weight: bold;
 }
 h3{
   font-size: 1.8rem;
@@ -41,13 +41,14 @@ p{
 }
 a{
   text-decoration: none;
+  color: #ffffff;
 }
 img{
   display: block;
 }
 input{
   font-weight: bold;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Inter', sans-serif;
 }`;
 
 export default GlobalStyles;
