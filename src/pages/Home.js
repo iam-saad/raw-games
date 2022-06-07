@@ -4,7 +4,7 @@ import Game from '../components/Game';
 import GameDetail from '../components/GameDetails';
 //Redux
 import { useDispatch, useSelector } from 'react-redux';
-import { loadGames } from '../actions/gamesActions';
+import { clearedSearch, loadGames, loadMore } from '../actions/gamesActions';
 //Style Components and Framer Motion
 import styled from 'styled-components';
 import { motion, AnimatePresence, AnimateSharedLayout } from 'framer-motion';
@@ -20,9 +20,19 @@ const Home = () => {
 		dispatch(loadGames());
 	}, [dispatch]);
 
-	const { popularGames, upComingGames, newGames, searched } = useSelector(
-		(state) => state.games
-	);
+	//Event Handler
+	const clearResultHandler = () => {
+		dispatch(clearedSearch());
+	};
+
+	const loadMoreHandler = (e) => {
+		dispatch(loadMore(e.target.value));
+	};
+
+	//Getting States
+	const { popularGames, upComingGames, newGames, searched, isLoading } =
+		useSelector((state) => state.games);
+
 	return (
 		<StyleGameList>
 			<AnimateSharedLayout>
@@ -30,65 +40,79 @@ const Home = () => {
 					{pathId && <GameDetail pathId={pathId} />}
 				</AnimatePresence>
 				{searched.length ? (
-					<StyleGames>
-						<h2>Games based on your search</h2>
-						{searched.map((game) => (
-							<Game
-								name={game.name}
-								released={game.released}
-								id={game.id}
-								image={game.background_image}
-								key={game.id}
-							/>
-						))}
-					</StyleGames>
+					<>
+						<StyleGames>
+							<h2>Games based on your search</h2>
+							{searched.map((game) => (
+								<Game
+									name={game.name}
+									released={game.released}
+									id={game.id}
+									image={game.background_image}
+									key={game.id}
+								/>
+							))}
+						</StyleGames>
+						<button onClick={clearResultHandler}>Clear Result</button>
+					</>
 				) : (
 					''
 				)}
-				<StyleGames>
-					<h2>Popular and trending</h2>
-					{popularGames &&
-						popularGames.map((game) => (
-							<Game
-								name={game.name}
-								released={game.released}
-								id={game.id}
-								image={game.background_image}
-								key={game.id}
-							/>
-						))}
-				</StyleGames>
-				<button>Load More</button>
 
-				<StyleGames>
-					<h2>New Games</h2>
-					{newGames &&
-						newGames.map((game) => (
-							<Game
-								name={game.name}
-								released={game.released}
-								image={game.background_image}
-								id={game.id}
-								key={game.id}
-							/>
-						))}
-				</StyleGames>
-				<button>Load More</button>
+				{!isLoading && (
+					<>
+						<StyleGames>
+							<h2>Popular and trending</h2>
+							{popularGames &&
+								popularGames.map((game) => (
+									<Game
+										name={game.name}
+										released={game.released}
+										id={game.id}
+										image={game.background_image}
+										key={game.id}
+									/>
+								))}
+						</StyleGames>
+						<button value='popularGamesData' onClick={loadMoreHandler}>
+							Load More
+						</button>
 
-				<StyleGames>
-					<h2>Upcoming Games</h2>
-					{upComingGames &&
-						upComingGames.map((game) => (
-							<Game
-								name={game.name}
-								released={game.released}
-								image={game.background_image}
-								id={game.id}
-								key={game.id}
-							/>
-						))}
-				</StyleGames>
-				<button>Load More</button>
+						<StyleGames>
+							<h2>New Games</h2>
+							{newGames &&
+								newGames.map((game) => (
+									<Game
+										name={game.name}
+										released={game.released}
+										image={game.background_image}
+										id={game.id}
+										key={game.id}
+									/>
+								))}
+						</StyleGames>
+						<button value='newGamesData' onClick={loadMoreHandler}>
+							Load More
+						</button>
+
+						<StyleGames>
+							<h2>Upcoming Games</h2>
+							{upComingGames &&
+								upComingGames.map((game) => (
+									<Game
+										name={game.name}
+										released={game.released}
+										image={game.background_image}
+										id={game.id}
+										key={game.id}
+									/>
+								))}
+						</StyleGames>
+						<button value='upcomingGamesData' onClick={loadMoreHandler}>
+							Load More
+						</button>
+					</>
+				)}
 			</AnimateSharedLayout>
 		</StyleGameList>
 	);
@@ -111,7 +135,7 @@ const StyleGameList = styled(motion.div)`
 		border-radius: 0.5rem;
 		background: #ffffff;
 		color: #000;
-		transition: all 0.5s ease;
+		transition: all 0.3s ease;
 		&:hover {
 			background: #515151;
 			color: #fff;

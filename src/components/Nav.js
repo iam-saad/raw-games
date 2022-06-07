@@ -1,32 +1,35 @@
 import React, { useState } from 'react';
-
+//Redux
+import { useDispatch } from 'react-redux';
+//Components
+import { searchGames } from '../actions/gamesActions';
 //style and motion
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { useDispatch } from 'react-redux';
-import { searchGames } from '../actions/gamesActions';
+//Router
+import { Link } from 'react-router-dom';
 
 const Nav = () => {
 	const dispatch = useDispatch();
-	const [query, setQuery] = useState('');
+	const [input, setInput] = useState('');
 	//Event Handler
-	const setInputHandler = (e) => {
-		setQuery(e.target.value);
+	const inputTextHandler = (e) => {
+		setInput(e.target.value);
 	};
 	const searchGamesHandler = (e) => {
 		e.preventDefault();
-		dispatch(searchGames(query));
-		setQuery('');
+		dispatch(searchGames(input));
+		setInput('');
 	};
 
 	return (
 		<StyleNav className='navbar'>
-			<a href='/' id='logo'>
+			<Link to='/' id='logo'>
 				Mad <span>Games.</span>
-			</a>
+			</Link>
 			<form className='search'>
 				<input
-					onChange={setInputHandler}
+					onChange={inputTextHandler}
 					type='text'
 					placeholder='search thousands of games here!'
 				/>
